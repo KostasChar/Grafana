@@ -1,0 +1,12 @@
+Memory Usage
+(sum(node_memory_MemTotal_bytes) - sum(node_memory_MemFree_bytes +node_memory_Buffers_bytes + node_memory_Cached_bytes) ) / sum(node_memory_MemTotal_bytes) * 100
+
+CPU
+sum(sum by (container_name)( rate(container_cpu_usage_seconds_total{image!=""}[1m] ) )) / count(node_cpu_seconds_total{mode="system"}) * 100
+
+
+So, to get from cAdvisor the same value as docker stats show, you can use the following expression: container_memory_usage_bytes - container_memory_cache
+
+I tried it out and got exactly the same values as docker stats produces.
+
+
